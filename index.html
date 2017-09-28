@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script type='text/javascript' src='js/jquery.min.js'></script>
+  <script type='text/javascript' src='js/knockout.js'></script>
+  <script type='text/javascript' src='js/search_box.js'></script>
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/main.css" rel="stylesheet" type="text/css">
+
+  <title>Document</title>
+</head>
+<body>
+
+<!-- My Name <data-bind ="text: firstName"> -->
+
+My Name <span data-bind ="text: textOfsearch"></span>
+Search  <input data-bind ="value: textOfsearch"/>
+
+
+  <!-- <h2>Hello, <span data-bind="text: fullName"> </span>!</h2> -->
+<div class='container'>
+<div class='row'>
+  <h3>Bart Locations</h3>
+<div class = 'col-md-4 blue'>
+segessegessegessegessegesesgse----Blue
+
+
+
+
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Station location">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary buttonblue" type="button">    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtter</button>
+      </span>
+
+    </div>
+
+
+</div>
+<div class = 'col-md-8'>
+esgseesgseesgseesgseesgseesgse----Red
+
+<div id="map"></div>
+
+</div>
+
+
+
+
+</div>
+</div>
+
+
+<script>
+   function initMap() {
+     var uluru = {lat: -25.363, lng: 131.044};
+     var map = new google.maps.Map(document.getElementById('map'), {
+       zoom: 4,
+       center: uluru
+     });
+     var marker = new google.maps.Marker({
+       position: uluru,
+       map: map
+     });
+   }
+ </script>
+
+ <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAEl4khTYia9RPafXXg06Y-iZyB3J6jMC4&callback=initMap"></script>
+
+</body>
+</html>

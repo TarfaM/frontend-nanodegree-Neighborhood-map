@@ -1,0 +1,27 @@
+/*.col-md-8 .blue{
+  background-color: rgb(2, 129, 244);
+}*/
+ .blue {
+background-color: rgb(143, 214, 238);
+}
+
+ .red {
+  background-color: rgb(231, 26, 20);
+
+}
+.buttonblue {
+
+background-color: rgb(89, 123, 224);
+}
+
+#map {
+   /*margin: 0;*/
+   /*padding: 0;*/
+   height: 100%;
+   width: 100%;
+  /*display: block;*/
+}
+
+span.icon {
+ font-family: 'Glyphicons Halflings';
+}
