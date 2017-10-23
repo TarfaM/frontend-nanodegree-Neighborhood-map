@@ -1,6 +1,14 @@
 /*.col-md-8 .blue{
   background-color: rgb(2, 129, 244);
 }*/
+@media screen and (min-width: 980px)  {
+/*@media screen and (max-width: 980) and (min-width: 520px) {*/
+    #map {
+    background-color: rgb(178, 222, 19);
+    width: 100%;
+        }
+}
+
  .blue {
 background-color: rgb(143, 214, 238);
 }
@@ -14,14 +22,42 @@ background-color: rgb(143, 214, 238);
 background-color: rgb(89, 123, 224);
 }
 
-#map {
+td {
+
+  cursor:pointer;
+}
+
+
+#map  {
    /*margin: 0;*/
    /*padding: 0;*/
    height: 100%;
-   width: 100%;
+   width: 50%;
   /*display: block;*/
+
+  margin-left: 50%;
+     /*height: 200px;*/
+     background: black;
+     position: relative;
+     padding-bottom: 56.25%;
+
+}
+/*.row .container{
+width:900px;
+
 }
 
+.container{
+width:900px;
+
+}*/
+/*.row .col-lg-6 .container{
+  background-color: rgb(242, 227, 25);
+width: 50%;
+
+}*/
 span.icon {
  font-family: 'Glyphicons Halflings';
 }
+
+    html, body { height: 100%; margin: 0; padding: 0; }
