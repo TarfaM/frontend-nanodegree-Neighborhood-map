@@ -1,74 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script type='text/javascript' src='js/jquery.min.js'></script>
-  <script type='text/javascript' src='js/knockout.js'></script>
-  <script type='text/javascript' src='js/search_box.js'></script>
-  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="css/main.css" rel="stylesheet" type="text/css">
+   <head>
+      <title>Neighborhood Project </title>
+           <script src="js/knockout.js"></script>
+           <script src="js/jquery.min.js"></script>
+           <link href="css/bootstrap.min.css" rel="stylesheet" >
+           <link href="css/main.css" rel="stylesheet" >
+           <script src="js/map.js" defer="defer"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8TEl-S7oIufePwstuOnIToy3ZtRPYmAI&callback=initMap" async defer></script>
+ </head>
 
-  <title>Document</title>
-</head>
-<body>
+   <body>
+<div class='container-fluid col-md-6'>
+ <h2 class="text-center">Search</h2>
+      <div class="row">
+     <div class="col-md-12">
+          <div class="input-group">
+            <input type="text" class="form-control" data-bind="textInput: query" autocomplete="off" placeholder="Station location">
+            <span class="input-group-btn">
+              <button class="btn btn-secondary blue" type="button">    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtter</button>
+            </span>
 
-<!-- My Name <data-bind ="text: firstName"> -->
+          </div>
 
-My Name <span data-bind ="text: textOfsearch"></span>
-Search  <input data-bind ="value: textOfsearch"/>
+          <!-- <div class="container"> -->
+              <table class="table table-condensed  table-hover">
+                  <thead>
+                      <tr>
+                          <th>title</th>
+                          <th>lat</th>
+                          <th>lng</th>
+                          <th>details</th>
+                      </tr>
+                  </thead>
+                  <tbody data-bind='foreach: filteredLocations'>
+                      <tr data-bind="click: clickMe">
+                          <td data-bind='text: title'></td>
+                          <td data-bind='text: lat'></td>
+                          <td data-bind='text: lng'></td>
+                          <td data-bind='text: details'></td>
+                        </tr>
+                  </tbody>
+              </table>
 
+       <!-- </div> -->
+       </div>   <!--end col-lg-6 -->
 
-  <!-- <h2>Hello, <span data-bind="text: fullName"> </span>!</h2> -->
-<div class='container'>
-<div class='row'>
-  <h3>Bart Locations</h3>
-<div class = 'col-md-4 blue'>
-segessegessegessegessegesesgse----Blue
+      <br>
+  </div>
+  </div>
 
+<!-- start -->
 
-
-
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Station location">
-      <span class="input-group-btn">
-        <button class="btn btn-secondary buttonblue" type="button">    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtter</button>
-      </span>
-
-    </div>
-
-
-</div>
-<div class = 'col-md-8'>
-esgseesgseesgseesgseesgseesgse----Red
-
-<div id="map"></div>
-
-</div>
-
-
-
-
-</div>
-</div>
-
-
-<script>
-   function initMap() {
-     var uluru = {lat: -25.363, lng: 131.044};
-     var map = new google.maps.Map(document.getElementById('map'), {
-       zoom: 4,
-       center: uluru
-     });
-     var marker = new google.maps.Marker({
-       position: uluru,
-       map: map
-     });
-   }
- </script>
-
- <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAEl4khTYia9RPafXXg06Y-iZyB3J6jMC4&callback=initMap"></script>
-
-</body>
+<!-- end -->
+ <div id="map"></div>
+   </body>
 </html>
