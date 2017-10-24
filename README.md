@@ -10,4 +10,6 @@ there is option to search about places and to get more details, you can click on
 3. There are 2 Api has been used (Google Map & foursquare) api.
 4. Knkckout.js  framework has been used .
 
-# for any issue you can contact me
+# for any issue you can contact me:
+Phone:234453334
+email:tarfa@email.com
