@@ -7,6 +7,7 @@ var locations = [{
             lng: 46.615403
         },
         marker: null
+
     },
     {
         title: 'The Nail Corner',
@@ -45,28 +46,6 @@ var locations = [{
         marker: null
     }
 ];
-var apiURL = 'https://api.foursquare.com/v2/venues/';
-var foursquareClientID = 'WPGVLH0N5HSOOVKJUASAX0N4KWP0PWZDOOYJZLDHYVIJEH3S';
-var foursquareSecret = 'GAQGBLH5Q3YEJHFJVCBUDSDLJL5RYMJEK3DQYJEQWMALQ1KW';
-// var lan =24.80701843434343;
-var lan = 24.807018;
-var lng = 46.615768;
-var venueFoursquareID = "20161016";
-
-var foursquareURL = apiURL + 'search?v=' + venueFoursquareID + '&ll=' + lan + ',' + lng + '&intent=checkin&' + 'client_id=' + foursquareClientID + '&client_secret=' + foursquareSecret;
-console.log(foursquareURL);
-
-$.ajax({
-    url: foursquareURL,
-    success: function(data) {
-        //  console.log(data);
-        //fetching data ..
-    },
-    error: function(error) {
-        alert("location details are available now , please try again.");
-
-    }
-});
 
 function initMap() {
     //var map = [];
@@ -95,8 +74,8 @@ function initMap() {
             id: i
         });
         // var markers =[];
-        //var markers =[];
-        this.markers = ko.observableArray("");
+        var markers =[];
+       this.markers = ko.observableArray("");
         markers.push(marker);
         locations[i].marker = marker;
         bounds.extend(marker.position);
@@ -129,13 +108,17 @@ function locationobj(title, lat, lng, details) {
         var target;
         if (event.target) target = event.target;
         else if (event.srcElement) target = event.srcElement;
-        console.log(locations);
+      //  console.log(locations);
         for (var i = 0; i < locations.length; i++) {
             // console.log (locations[i].title==title);
             if (locations[i].title == title) {
                 var infowindow = new google.maps.InfoWindow();
-                populateInfoWindow2(locations[i].marker, infowindow);
+                var lat =locations[i].location.lat;
+                var lng =locations[i].location.lng;
+                populateInfoWindow2(locations[i].marker, infowindow,lat,lng);
                 locations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
+
+
                 //locations[i].marker.setAnimation(null);
                 //Animation.DROP;
             }
@@ -175,15 +158,38 @@ function loaddata() {
     }
 }
 
-function populateInfoWindow2(marker, infowindow) {
+function populateInfoWindow2(marker, infowindow,lan,lng) {
 
     if (infowindow.marker != marker) {
         infowindow.marker = marker;
-        infowindow.setContent('<div>' + marker.title + '</div>');
-        infowindow.open(map, marker);
-        marker.addListener('closeclick', function() {
-            infowindow.setMarker(null);
-            // infowindow.open(map ,marker);
+        var phone,address,name;
+        var apiURL = 'https://api.foursquare.com/v2/venues/';
+        var foursquareClientID = 'WPGVLH0N5HSOOVKJUASAX0N4KWP0PWZDOOYJZLDHYVIJEH3S';
+        var foursquareSecret = 'GAQGBLH5Q3YEJHFJVCBUDSDLJL5RYMJEK3DQYJEQWMALQ1KW';
+        var venueFoursquareID = "20161016";
+        var foursquareURL = apiURL + 'search?v=' + venueFoursquareID + '&ll=' + lan + ',' + lng + '&intent=checkin&' + 'client_id=' + foursquareClientID + '&client_secret=' + foursquareSecret;
+         console.log(foursquareURL);
+        $.ajax({
+            url: foursquareURL,
+            success: function(data) {
+            phone=data.response.venues[0].contact.phone;
+            address=data.response.venues[0].location.address;
+            name=data.response.venues[0].name;
+            this.phone = ko.observable(phone);
+
+        // return "phone(#): "+phone;
+        console.log("phone"+phone);
+      infowindow.setContent('<div>'+'Name :'+name+'/'+marker.title +'<br>'+'PHONE(#) :'+phone+'Address :'+address+'</div>');
+      infowindow.open(map, marker);
+      marker.addListener('closeclick', function() {
+          infowindow.setMarker(null);
+          // infowindow.open(map ,marker);
+      });
+            },
+            error: function(error) {
+                alert("location details are available now , please try again.");
+            }
         });
-    }
+
+    }//END IF
 } //populateInfoWindow
