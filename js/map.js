@@ -83,10 +83,11 @@ function initMap() {
     var largeInfowindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
     // var largeInfowindow = new google.maps.InfoWindow({
+    var marker;
     for (i = 0; i < locations.length; i++) {
         var position = locations[i].location;
         var title = locations[i].title;
-        var marker = new google.maps.Marker({
+         marker = new google.maps.Marker({
             map: map,
             position: position,
             title: title,
@@ -99,12 +100,12 @@ function initMap() {
         markers.push(marker);
         locations[i].marker = marker;
         bounds.extend(marker.position);
-        marker.addListener('click', function() {
-            populateInfoWindow(this, largeInfowindow);
-            // infowindow.open(map ,marker);
-        });
-    }
 
+    }
+    marker.addListener('click', function() {
+        populateInfoWindow(this, largeInfowindow);
+        // infowindow.open(map ,marker);
+    });
     function populateInfoWindow(marker, infowindow) {
 
         if (infowindow.marker != marker) {
