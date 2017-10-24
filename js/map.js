@@ -46,9 +46,8 @@ var locations = [{
     }
 ];
 var apiURL = 'https://api.foursquare.com/v2/venues/';
-var foursquareClientID = 'WPGVLH0N5HSOOVKJUASAX0N4KWP0PWZDOOYJZLDHYVIJEH3S'
+var foursquareClientID = 'WPGVLH0N5HSOOVKJUASAX0N4KWP0PWZDOOYJZLDHYVIJEH3S';
 var foursquareSecret = 'GAQGBLH5Q3YEJHFJVCBUDSDLJL5RYMJEK3DQYJEQWMALQ1KW';
-var foursquareVersion = '20161016';
 // var lan =24.80701843434343;
 var lan = 24.807018;
 var lng = 46.615768;
@@ -70,7 +69,7 @@ $.ajax({
 });
 
 function initMap() {
-    var map = [];
+    //var map = [];
     //  var map = new google.maps.Map(document.getElementsByClassName("row")[0].getElementsByClassName("col-lg-6")[0].getElementById('map'), {
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {
@@ -140,7 +139,7 @@ function locationobj(title, lat, lng, details) {
                 //Animation.DROP;
             }
         } //end for loop
-    }
+    };
 }
 
 function model() {
