@@ -1,63 +1,40 @@
-/*.col-md-8 .blue{
-  background-color: rgb(2, 129, 244);
-}*/
-@media screen and (min-width: 980px)  {
-/*@media screen and (max-width: 980) and (min-width: 520px) {*/
-    #map {
-    background-color: rgb(178, 222, 19);
-    width: 100%;
-        }
+@media screen and (min-width: 980px) {
+    .col-md-6 #map {
+        width: 900px;
+        height: 500px;
+        margin: 0px;
+    }
+    .col-md-6 {
+        margin: 0px;
+    }
 }
-
- .blue {
-background-color: rgb(143, 214, 238);
+@media screen and (min-width: 991px) {
+    .col-md-6 #map {
+        background-color: rgb(142, 11, 63);
+        width: 700px;
+        margin-left: 50%;
+    }
 }
-
- .red {
-  background-color: rgb(231, 26, 20);
-
+.blue {
+    background-color: rgb(143, 214, 238);
 }
-.buttonblue {
-
-background-color: rgb(89, 123, 224);
-}
-
 td {
-
-  cursor:pointer;
+    cursor: pointer;
 }
-
-
-#map  {
-   /*margin: 0;*/
-   /*padding: 0;*/
-   height: 100%;
-   width: 50%;
-  /*display: block;*/
-
-  margin-left: 50%;
-     /*height: 200px;*/
-     background: black;
-     position: relative;
-     padding-bottom: 56.25%;
-
+#map {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    background: black;
+    position: relative;
+    padding-bottom: 56.25%;
 }
-/*.row .container{
-width:900px;
-
-}
-
-.container{
-width:900px;
-
-}*/
-/*.row .col-lg-6 .container{
-  background-color: rgb(242, 227, 25);
-width: 50%;
-
-}*/
 span.icon {
- font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings';
 }
-
-    html, body { height: 100%; margin: 0; padding: 0; }
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
