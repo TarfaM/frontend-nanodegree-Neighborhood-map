@@ -80,11 +80,11 @@ function initMap() {
             markers.push(marker);
             locations[i].marker = marker;
             bounds.extend(marker.position);
-            marker.addListener('click', function() {
-            populateInfoWindow(this, largeInfowindow);
-            // infowindow.open(map ,marker);
-            });
-        }//end loop
+          }//end loop
+          marker.addListener('click', function() {
+          populateInfoWindow(this, largeInfowindow);
+          // infowindow.open(map ,marker);
+          });
 
         function populateInfoWindow(marker, infowindow) {
                 if (infowindow.marker != marker) {
