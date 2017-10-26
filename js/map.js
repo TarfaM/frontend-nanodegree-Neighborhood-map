@@ -80,33 +80,34 @@ function initMap() {
             markers.push(marker);
             locations[i].marker = marker;
             bounds.extend(marker.position);
-
-        }
-        marker.addListener('click', function() {
+            marker.addListener('click', function() {
             populateInfoWindow(this, largeInfowindow);
             // infowindow.open(map ,marker);
-        });
+            });
+        }//end loop
 
         function populateInfoWindow(marker, infowindow) {
-
                 if (infowindow.marker != marker) {
                     infowindow.marker = marker;
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    trunOffBounce(marker);
                     infowindow.setContent('<div>' + marker.title + '</div>');
                     infowindow.open(map, marker);
                     marker.addListener('closeclick', function() {
-                        infowindow.setMarker(null);
-
-                        // infowindow.open(map ,marker);
+                    infowindow.setMarker(null);
+                    // infowindow.open(map ,marker);
                     });
                 }
             } //populateInfoWindow
     } //initMap
 
-function locationobj(title, lat, lng, details) {
+function locationobj(title, lat, lng, details ,marker) {
     this.title = ko.observable(title);
     this.lat = ko.observable(lat);
     this.lng = ko.observable(lng);
     this.details = ko.observable(details);
+    this.marker = ko.observable(marker);
+
     this.clickMe = function(data, event) {
         var target;
         if (event.target) target = event.target;
@@ -140,11 +141,32 @@ function model() {
                 // item.marker().setAnimation(google.maps.Animation.BOUNCE);
                 // trunOffBounce(item.marker());
                 //set marker + show contetn
-                return item.title().toLowerCase().indexOf(filter) !== -1;
+                // return item.title().toLowerCase().indexOf(filter) !== -1;
+
+                        // var isMatching = item.title().toLowerCase().indexOf(filter) >= 0;
+                        var isMatching = item.title().toLowerCase().indexOf(filter) !== -1;
+                        if (isMatching) {
+                          //  item.marker.setAnimation(google.maps.Animation.BOUNCE);
+                          // trunOffBounce(item.marker());
+                                      // show markers here
+                      var infowindow = new google.maps.InfoWindow();
+                      populateInfoWindow2(item.marker(), infowindow, item.lat(), item.lng());
+                      var slectedMarker =item.marker();
+                      slectedMarker.setAnimation(google.maps.Animation.BOUNCE);
+                      // this.setAnimation(google.maps.Animation.BOUNCE);
+                      //trunOffBounce(item.marker());
+                            console.log(item);
+                        } else {
+                            // hide marker here
+                            //console.log(item);
+                        }
+
+                        return isMatching;
+
+
             });
         }
     });
-    console.log(self.filteredLocations);
 
 }
 
@@ -160,7 +182,8 @@ function loaddata() {
         var lng = locations[i].location.lng;
         var title = locations[i].title;
         var details = locations[i].details;
-        mymodel.locationobjs.push(new locationobj(title, lat, lng, details));
+        var marker =locations[i].marker;
+        mymodel.locationobjs.push(new locationobj(title, lat, lng, details,marker));
 
     }
 }
@@ -183,13 +206,13 @@ function populateInfoWindow2(marker, infowindow, lan, lng) {
                     address = data.response.venues[0].location.address;
                     name = data.response.venues[0].name;
                     this.phone = ko.observable(phone);
-                    if (phone === "" || phone === null) {
+                    if (phone === "" || phone === null ||typeof phone == 'undefined') {
                         phone = "Not avilable";
                     }
-                    if (address === "" || address === null) {
+                    if (address === "" || address === null|| typeof address == 'undefined') {
                         address = "Not avilable";
                     }
-                    if (name === "" || name === null) {
+                    if (name === "" || name === null|| typeof name == 'undefined' ) {
                         name = "Not avilable";
                     }
                     infowindow.setContent('<div>' + 'Name :' + name + '/' + marker.title + '<br>' + 'PHONE(#) :' + phone + ' Address : ' + address + '</div>');
@@ -201,7 +224,7 @@ function populateInfoWindow2(marker, infowindow, lan, lng) {
                     });
                 },
                 error: function(error) {
-                    alert("location details are available now , please try again.");
+                    alert("location details are not available now , please try again.");
                 }
             });
 
