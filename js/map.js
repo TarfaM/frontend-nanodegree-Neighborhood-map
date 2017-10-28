@@ -63,8 +63,10 @@ function initMap() {
         // var largeInfowindow = new google.maps.InfoWindow({
         var marker;
         for (i = 0; i < locations.length; i++) {
+
             var position = locations[i].location;
             var title = locations[i].title;
+
             marker = new google.maps.Marker({
                 map: map,
                 position: position,
@@ -76,6 +78,7 @@ function initMap() {
             this.markers = ko.observableArray("");
             markers.push(marker);
             locations[i].marker = marker;
+
             bounds.extend(marker.position);
           }//end loop
           marker.addListener('click', function() {
@@ -145,6 +148,11 @@ function model() {
                         // var isMatching = item.title().toLowerCase().indexOf(filter) >= 0;
                         var isMatching = item.title().toLowerCase().indexOf(filter) !== -1;
                         if (isMatching) {
+                          // console.log(self.locationobjs());
+                          // console.log(item.marker());
+                          DeleteMarkers(self.locationobjs(),item.marker());
+                          //locationobjs().marke.removeAll();
+                          //filteredLocations().removeAll();
                           //  item.marker.setAnimation(google.maps.Animation.BOUNCE);
                           // trunOffBounce(item.marker());
                                       // show markers here
@@ -154,7 +162,7 @@ function model() {
                       //slectedMarker.setAnimation(google.maps.Animation.BOUNCE);
                       // this.setAnimation(google.maps.Animation.BOUNCE);
                       //trunOffBounce(item.marker());
-                            console.log(item);
+                            // console.log(item);
                         } else {
                             // hide marker here
                             //console.log(item);
@@ -235,4 +243,18 @@ function trunOffBounce(marker) {
     setTimeout(function() {
         marker.setAnimation(null);
     }, 3000);
+}
+
+function DeleteMarkers(loc,elm){
+    for (i = 0; i < loc.length; i++) {
+      loc[i].marke=null;
+      // loc[i].marke.pop();
+      locations[i].marker=null;
+      // locations[i].pop();
+
+    }
+    loc[0].marke=elm;
+    locations[0].marker=elm;
+    console.log(elm);
+    initMap();
 }
