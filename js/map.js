@@ -7,7 +7,6 @@ var locations = [{
         lng: 46.615403
     },
     marker: null
-
 }, {
     title: 'The Nail Corner',
     details: "Place2",
@@ -50,7 +49,6 @@ function errorGoogleMap() {
 
 function initMap() {
         //var map = [];
-        //  var map = new google.maps.Map(document.getElementsByClassName("row")[0].getElementsByClassName("col-lg-6")[0].getElementById('map'), {
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {
                 lat: 24.782661,
@@ -74,8 +72,7 @@ function initMap() {
                 animation: google.maps.Animation.DROP,
                 id: i
             });
-            // var markers =[];
-            var markers = [];
+            // var markers = [];
             this.markers = ko.observableArray("");
             markers.push(marker);
             locations[i].marker = marker;
@@ -84,7 +81,9 @@ function initMap() {
           marker.addListener('click', function() {
           populateInfoWindow(this, largeInfowindow);
           // infowindow.open(map ,marker);
-          });
+          }
+
+        );
 
         function populateInfoWindow(marker, infowindow) {
                 if (infowindow.marker != marker) {
@@ -101,7 +100,7 @@ function initMap() {
             } //populateInfoWindow
     } //initMap
 
-function locationobj(title, lat, lng, details ,marker) {
+function LocationObj(title, lat, lng, details ,marker) {
     this.title = ko.observable(title);
     this.lat = ko.observable(lat);
     this.lng = ko.observable(lng);
@@ -149,10 +148,10 @@ function model() {
                           //  item.marker.setAnimation(google.maps.Animation.BOUNCE);
                           // trunOffBounce(item.marker());
                                       // show markers here
-                      var infowindow = new google.maps.InfoWindow();
-                      populateInfoWindow2(item.marker(), infowindow, item.lat(), item.lng());
-                      var slectedMarker =item.marker();
-                      slectedMarker.setAnimation(google.maps.Animation.BOUNCE);
+                      //var infowindow = new google.maps.InfoWindow();
+                      //populateInfoWindow2(item.marker(), infowindow, item.lat(), item.lng());
+                      //var slectedMarker =item.marker();
+                      //slectedMarker.setAnimation(google.maps.Animation.BOUNCE);
                       // this.setAnimation(google.maps.Animation.BOUNCE);
                       //trunOffBounce(item.marker());
                             console.log(item);
@@ -183,7 +182,7 @@ function loaddata() {
         var title = locations[i].title;
         var details = locations[i].details;
         var marker =locations[i].marker;
-        mymodel.locationobjs.push(new locationobj(title, lat, lng, details,marker));
+        mymodel.locationobjs.push(new LocationObj(title, lat, lng, details,marker));
 
     }
 }
