@@ -1,4 +1,5 @@
 var num = 12;
+var marker;
 var locations = [{
     title: 'Danube Hypermarket Al Malqa',
     details: "Place1",
@@ -48,7 +49,6 @@ function errorGoogleMap() {
 // Maps api asynchronous load code here.
 
 function initMap() {
-        //var map = [];
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {
                 lat: 24.782661,
@@ -56,12 +56,9 @@ function initMap() {
             },
             zoom: num
         });
-        // var infowindow = new google.maps.InfoWindow();
         var i;
         var largeInfowindow = new google.maps.InfoWindow();
         var bounds = new google.maps.LatLngBounds();
-        // var largeInfowindow = new google.maps.InfoWindow({
-        var marker;
         for (i = 0; i < locations.length; i++) {
 
             var position = locations[i].location;
@@ -80,14 +77,16 @@ function initMap() {
             locations[i].marker = marker;
 
             bounds.extend(marker.position);
+            marker.addListener('click', minFun() );
+
           }//end loop
-          marker.addListener('click', function() {
-          populateInfoWindow(this, largeInfowindow);
-          // infowindow.open(map ,marker);
+        //to solve (Don't make functions within a loop.)
+          function minFun(){
+            return function () {
+              populateInfoWindow2(this, largeInfowindow ,marker.position.lat(),marker.position.lng());
+              largeInfowindow.open(map ,marker);
+            };
           }
-
-        );
-
         function populateInfoWindow(marker, infowindow) {
                 if (infowindow.marker != marker) {
                     infowindow.marker = marker;
@@ -114,9 +113,7 @@ function LocationObj(title, lat, lng, details ,marker) {
         var target;
         if (event.target) target = event.target;
         else if (event.srcElement) target = event.srcElement;
-        //  console.log(locations);
         for (var i = 0; i < locations.length; i++) {
-            // console.log (locations[i].title==title);
             if (locations[i].title == title) {
                 var infowindow = new google.maps.InfoWindow();
                 var lat = locations[i].location.lat;
@@ -131,49 +128,38 @@ function LocationObj(title, lat, lng, details ,marker) {
 function model() {
     var self = this;
     self.locationobjs = ko.observableArray("");
+    self.allarray = ko.observableArray("");
     self.query = ko.observable("");
     self.filteredLocations = ko.computed(function() {
-        var filter = self.query().toLowerCase();
+    var filter = self.query().toLowerCase();
         if (!filter) {
             return self.locationobjs();
         } else {
-            return ko.utils.arrayFilter(self.locationobjs(), function(item) {
-                // console.log(item.title());
-                // populateInfoWindow2(item.marker(), infowindow,item.marker.lat(),item.marker.lng());
-                // item.marker().setAnimation(google.maps.Animation.BOUNCE);
-                // trunOffBounce(item.marker());
-                //set marker + show contetn
-                // return item.title().toLowerCase().indexOf(filter) !== -1;
-
-                        // var isMatching = item.title().toLowerCase().indexOf(filter) >= 0;
+                        return ko.utils.arrayFilter(self.locationobjs(), function(item) {
                         var isMatching = item.title().toLowerCase().indexOf(filter) !== -1;
                         if (isMatching) {
-                          // console.log(self.locationobjs());
-                          // console.log(item.marker());
-                          DeleteMarkers(self.locationobjs(),item.marker());
-                          //locationobjs().marke.removeAll();
-                          //filteredLocations().removeAll();
-                          //  item.marker.setAnimation(google.maps.Animation.BOUNCE);
-                          // trunOffBounce(item.marker());
-                                      // show markers here
-                      //var infowindow = new google.maps.InfoWindow();
-                      //populateInfoWindow2(item.marker(), infowindow, item.lat(), item.lng());
-                      //var slectedMarker =item.marker();
-                      //slectedMarker.setAnimation(google.maps.Animation.BOUNCE);
-                      // this.setAnimation(google.maps.Animation.BOUNCE);
-                      //trunOffBounce(item.marker());
-                            // console.log(item);
-                        } else {
-                            // hide marker here
-                            //console.log(item);
+                        var allarray = self.filteredLocations();
+                        if(allarray.length==1){
+                        var found =  GetMarker(allarray[0].title());
+                        DeleteAllexceptMe(allarray[0].title());
+                        var infowindow = new google.maps.InfoWindow();
+                        var lat1 = allarray[0].lat();
+                        var lng1 = allarray[0].lng();
+                        populateInfoWindow2(found, infowindow, lat1, lng1);
+                        found.setAnimation(google.maps.Animation.BOUNCE);
+                        trunOffBounce(found);
+                  }
+
+                        else {
+                            initMap();
                         }
 
                         return isMatching;
 
-
+}
             });
         }
-    });
+    });//end filteredLocations
 
 }
 
@@ -205,7 +191,6 @@ function populateInfoWindow2(marker, infowindow, lan, lng) {
             var foursquareSecret = 'GAQGBLH5Q3YEJHFJVCBUDSDLJL5RYMJEK3DQYJEQWMALQ1KW';
             var venueFoursquareID = "20161016";
             var foursquareURL = apiURL + 'search?v=' + venueFoursquareID + '&ll=' + lan + ',' + lng + '&intent=checkin&' + 'client_id=' + foursquareClientID + '&client_secret=' + foursquareSecret;
-            console.log(foursquareURL);
             $.ajax({
                 url: foursquareURL,
                 success: function(data) {
@@ -228,6 +213,7 @@ function populateInfoWindow2(marker, infowindow, lan, lng) {
                     marker.addListener('closeclick', function() {
                         // infowindow.open(map ,marker);
 
+
                     });
                 },
                 error: function(error) {
@@ -244,17 +230,25 @@ function trunOffBounce(marker) {
         marker.setAnimation(null);
     }, 3000);
 }
-
-function DeleteMarkers(loc,elm){
-    for (i = 0; i < loc.length; i++) {
-      loc[i].marke=null;
-      // loc[i].marke.pop();
-      locations[i].marker=null;
-      // locations[i].pop();
-
+// passing title to get Marker details -
+    function GetMarker(title){
+      var mk;
+        for (var i = 0; i < locations.length; i++) {
+        if(locations[i].title==title)
+              {mk =locations[i].marker;}
+            }
+  return mk;
+  }
+//passing title and remove other markers
+  function DeleteAllexceptMe(title){
+    for (i = 0; i < locations.length; i++)
+    {
+      if(locations[i].title==title)
+            {//Do nothing
+            }else{
+                locations[i].marker.setMap(null);
+                // locations[i].marker=null;
+                }
     }
-    loc[0].marke=elm;
-    locations[0].marker=elm;
-    console.log(elm);
-    initMap();
-}
+    return locations;
+  }
