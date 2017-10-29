@@ -45,9 +45,7 @@ var locations = [{
 function errorGoogleMap() {
     alert('Google Maps is not available right now , Please try again.');
 }
-
 // Maps api asynchronous load code here.
-
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {
@@ -77,14 +75,19 @@ function initMap() {
         locations[i].marker = marker;
 
         bounds.extend(marker.position);
-        marker.addListener('click', minFun());
+        marker.addListener('click', minFun(marker));
 
     } //end loop
     //to solve (Don't make functions within a loop.)
-    function minFun() {
+    function minFun(marker) {
         return function() {
-            populateInfoWindow2(this, largeInfowindow, marker.position.lat(), marker.position.lng());
-            largeInfowindow.open(map, marker);
+            if (largeInfowindow.marker != marker) {
+                populateInfoWindow2(marker, largeInfowindow, marker.position.lat(), marker.position.lng());
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                // largeInfowindow.open(map, marker);
+                // this.setAnimation(google.maps.Animation.BOUNCE);
+                trunOffBounce(this);
+            }
         };
     }
 
@@ -134,29 +137,36 @@ function model() {
     self.query = ko.observable("");
     self.filteredLocations = ko.computed(function() {
         var filter = self.query().toLowerCase();
+        // {DisableAllMarckers();}
         if (!filter) {
             return self.locationobjs();
+            // DisableAllMarckers();
         } else {
             return ko.utils.arrayFilter(self.locationobjs(), function(item) {
                 var isMatching = item.title().toLowerCase().indexOf(filter) !== -1;
                 if (isMatching) {
                     var allarray = self.filteredLocations();
+                    if (allarray.length > 4) {
+                        DisableAllMarckers();
+                    }
                     if (allarray.length == 1) {
+                        ShowAllMarckers();
+                        var infowindow = new google.maps.InfoWindow();
                         var found = GetMarker(allarray[0].title());
                         DeleteAllexceptMe(allarray[0].title());
-                        var infowindow = new google.maps.InfoWindow();
                         var lat1 = allarray[0].lat();
                         var lng1 = allarray[0].lng();
                         populateInfoWindow2(found, infowindow, lat1, lng1);
                         found.setAnimation(google.maps.Animation.BOUNCE);
                         trunOffBounce(found);
-                    } else {
-                        initMap();
+                        // ShowAllMarckers();
+                        // infowindow.close();
                     }
-
-                    return isMatching;
-
+                } else { //Not matching
+                    // DisableAllMarckers(); // it gave some issue
                 }
+
+                return isMatching;
             });
         }
     }); //end filteredLocations
@@ -209,11 +219,9 @@ function populateInfoWindow2(marker, infowindow, lan, lng) {
                 }
                 infowindow.setContent('<div>' + 'Name :' + name + '/' + marker.title + '<br>' + 'PHONE(#) :' + phone + ' Address : ' + address + '</div>');
                 infowindow.open(map, marker);
-
+                name = ""; address = ""; phone = ""; // to fix one issue
                 marker.addListener('closeclick', function() {
-                    // infowindow.open(map ,marker);
-
-
+                name = ""; address = ""; phone = "";// to fix one issue
                 });
             },
             error: function(error) {
@@ -244,10 +252,27 @@ function GetMarker(title) {
 function DeleteAllexceptMe(title) {
     for (i = 0; i < locations.length; i++) {
         if (locations[i].title == title) { //Do nothing
+            locations[i].marker.setVisible(true);
         } else {
-            locations[i].marker.setMap(null);
+            // locations[i].marker.setMap(null);
+            locations[i].marker.setVisible(false);
+            // locations[i].marker.setMap(null);
             // locations[i].marker=null;
         }
     }
     return locations;
+}
+
+function ShowAllMarckers() {
+    for (i = 0; i < locations.length; i++) {
+        locations[i].marker.setVisible(true);
+    }
+
+}
+
+function DisableAllMarckers() {
+    for (i = 0; i < locations.length; i++) {
+        locations[i].marker.setVisible(false);
+    }
+
 }
