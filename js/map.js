@@ -41,8 +41,7 @@ var locations = [{
 function errorGoogleMap() {
     alert('Google Maps is not available right now , Please try again.');
 }
-
-// Maps api asynchronous load code here.
+//API
 var map = '';
 
 function initMap() {
@@ -58,7 +57,6 @@ function initMap() {
     var bounds = new google.maps.LatLngBounds();
 
     function clickMeEvent(data) {
-        // stop all other bounceing
         for (var i = 0; i < locations.length; i++) {
             locations[i].marker.setAnimation(null);
         }
