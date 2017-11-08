@@ -1,8 +1,18 @@
 <!DOCTYPE html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neighborhood Project </title>
-  </head>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/knockout.js"></script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <script src="js/map.js" defer="defer"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8TEl-S7oIufePwstuOnIToy3ZtRPYmAI&callback=initMap" onerror="errorGoogleMap()"></script>
+
+</head>
+
 <body>
     <div class='container-fluid col-md-6'>
         <h2 class="text-center">Search</h2>
@@ -11,7 +21,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" data-bind="textInput: query" autocomplete="off" placeholder="Station location">
                     <span class="input-group-btn">
-              <button class="btn btn-secondary blue" type="button">    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtter</button>
+            <button class="btn btn-secondary blue" type="button">    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtter</button>
                     </span>
                 </div>
                 <!-- <div class="container"> -->
@@ -24,29 +34,24 @@
                             <th>details</th>
                         </tr>
                     </thead>
-                    <tbody data-bind='foreach: filteredLocations'>
+                    <tbody data-bind="foreach: filteredLocations">
                         <tr data-bind="click: clickMe">
                             <td data-bind='text: title'></td>
-                            <td data-bind='text: lat'></td>
-                            <td data-bind='text: lng'></td>
+                            <td data-bind='text: location.lat'></td>
+                            <td data-bind='text: location.lng'></td>
                             <td data-bind='text: details'></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-              <div class="col-md-5">
-                      <div id="map"></div>
-                </div>
+            <div class="col-md-5">
+                <div id="map"></div>
+            </div>
 
             <br>
         </div>
     </div>
-    <script src="js/knockout.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <script src="js/map.js" defer="defer"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8TEl-S7oIufePwstuOnIToy3ZtRPYmAI&callback=initMap" onerror="errorGoogleMap()"></script>
 
 </body>
+
 </html>
