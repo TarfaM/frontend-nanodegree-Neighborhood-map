@@ -162,8 +162,6 @@ function model() {
     self.filteredLocations = ko.computed(function() {
         var filter = self.query().trim();
         if (filter === '') {
-            // if (!(filter.length > 0)) {
-            // if (!filter.length > 0) {
             stopAllBounce();
             infowindow.close();
             for (var i = 0; i < self.LocationObj().length; i++) {
@@ -193,7 +191,3 @@ function model() {
     }); // ko.computed
 
 } //model()
-//
-// $(document).ready(function () {
-//   ko.applyBindings(new model())
-// });
